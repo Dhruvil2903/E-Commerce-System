@@ -1,0 +1,117 @@
+version: "3.9"
+
+services:
+
+  postgres:
+    image: postgres:18
+    container_name: ecommerce-postgres
+    restart: always
+
+    environment:
+      POSTGRES_DB: ecommerce
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+    networks:
+      - ecommerce-network
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8081:8080"
+    depends_on:
+      - auth-service
+    networks:
+      - ecommerce-network
+
+  auth-service:
+    build:
+      context: ./auth-service
+    container_name: auth-service
+    ports:
+      - "8082:8080"
+    depends_on:
+      - postgres
+    networks:
+      - ecommerce-network
+
+  user-service:
+    build:
+      context: ./user-service
+    container_name: user-service
+    ports:
+      - "8083:8080"
+    depends_on:
+      - postgres
+    networks:
+      - ecommerce-network
+
+  product-service:
+    build:
+      context: ./product-service
+    container_name: product-service
+    ports:
+      - "8084:8080"
+    depends_on:
+      - postgres
+    networks:
+      - ecommerce-network
+
+  inventory-service:
+    build:
+      context: ./inventory-service
+    container_name: inventory-service
+    ports:
+      - "8085:8080"
+    depends_on:
+      - postgres
+    networks:
+      - ecommerce-network
+
+  order-service:
+    build:
+      context: ./order-service
+    container_name: order-service
+    ports:
+      - "8086:8080"
+    depends_on:
+      - postgres
+      - kafka
+    networks:
+      - ecommerce-network
+
+  cart-service:
+    build:
+      context: ./cart-service
+    container_name: cart-service
+    ports:
+      - "8087:8080"
+    depends_on:
+      - postgres
+    networks:
+      - ecommerce-network
+
+  notification-service:
+    build:
+      context: ./notification-service
+    container_name: notification-service
+    ports:
+      - "8088:8080"
+    depends_on:
+      - kafka
+    networks:
+      - ecommerce-network
+
+volumes:
+  postgres-data:
+
+networks:
+  ecommerce-network:
