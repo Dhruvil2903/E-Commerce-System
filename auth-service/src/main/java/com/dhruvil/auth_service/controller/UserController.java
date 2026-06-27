@@ -3,10 +3,12 @@ package com.dhruvil.auth_service.controller;
 import com.dhruvil.auth_service.customExceptions.InvalidCredentialException;
 import com.dhruvil.auth_service.customExceptions.UserIsAlreadyExistException;
 import com.dhruvil.auth_service.customExceptions.UserIsNotFoundException;
+import com.dhruvil.auth_service.dto.LoginResponse;
 import com.dhruvil.auth_service.dto.UserRequest;
 import com.dhruvil.auth_service.dto.UserResponse;
 import com.dhruvil.auth_service.serviceImpl.UserServiceImpl;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserServiceImpl userService;
@@ -27,8 +29,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserResponse> login(@RequestBody UserRequest userRequest) throws UserIsNotFoundException, InvalidCredentialException {
-        UserResponse userResponse = userService.login(userRequest);
+    public ResponseEntity<LoginResponse> login(@RequestBody UserRequest userRequest) throws UserIsNotFoundException, InvalidCredentialException {
+        LoginResponse userResponse = userService.login(userRequest);
         return ResponseEntity.status(HttpStatus.OK).body(userResponse);
 
     }
