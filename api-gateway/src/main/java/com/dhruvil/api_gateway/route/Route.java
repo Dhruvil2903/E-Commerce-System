@@ -19,4 +19,11 @@ public class Route {
                 .build();
     }
 
+    @Bean
+    public RouterFunction<ServerResponse> handleProductRoute(){
+        return route("product_service")
+                .route(RequestPredicates.path("/api/products/**"), HandlerFunctions.http("http://product-service:8084"))
+                .build();
+    }
+
 }

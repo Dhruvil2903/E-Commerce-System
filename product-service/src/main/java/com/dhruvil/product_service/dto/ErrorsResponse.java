@@ -1,4 +1,4 @@
-package com.dhruvil.auth_service.dto;
+package com.dhruvil.product_service.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +22,4 @@ public class ErrorsResponse {
         this.message = message;
         this.path = path;
     }
-
-
 }
